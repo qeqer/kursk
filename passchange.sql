@@ -1,4 +1,5 @@
 use mysql;
 select * from user;
-UPDATE user SET authentication_string = PASSWORD("2912") WHERE User = "root";
+SET PASSWORD for 'root'@'localhost' ='1111';
+select *from user;
 FLUSH PRIVILEGES;

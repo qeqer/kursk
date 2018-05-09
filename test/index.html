@@ -1,19 +1,27 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="contr">
 <head>
 	<meta charset="utf-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="/app-js/controller.js"></script>
 </head>
-<body>
-<label>Введите имя:</label>
-<input type="text" ng-model="name" placeholder="Введите имя">
- 
-<h1>Добро пожаловать {{name}}!</h1>
+	<body>
+
+		<div ng-controller = "fillManager as fm">
+			<label>Разпознавание слов!</label>
+			<br>
+			Предложение: <b> {{fm.sentence}} </b>
+			<br>
+			Нераспознанное слово: <b> {{fm.word}} </b>
+			<br>
+			<input type = "text" name = "in_word" ng-model="fm.in_word">
+			<br>
+			<button ng-click="fm.saveCorrect()">Save Correct</button>
+			<br>
+			{{fm.error_status}}
+		</div>
 
 
-<a href = "test.php"> kekosik </a>
-      
 
-</body>
+	</body>
 </html>
