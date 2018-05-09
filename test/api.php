@@ -1,20 +1,16 @@
 <?php
-	set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line) {
-		throw new ErrorException ($err_msg, 0, $err_severity, $err_file, $err_line);
-	});
 	header('Content-Type: text/html; charset=UTF-8');
 	header("HTTP/1.1 200 OK");
 	
+	set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line) {
+		throw new ErrorException ($err_msg, 0, $err_severity, $err_file, $err_line);
+	});
+
 	$host = "localhost";
 	$user = "root";
 	$password = "1111";
 	$db = "lingvo";
 	$table = "problem_words";
-	$getOneLineQuery = "select * from $table where (correct is null) and (same_word is null)  limit 1";
-/*	
-	$saveSameQuery = "UPDATE problem_words SET same_word = $returnedSame where id = $id_num";
-
-	*/
 
 	$resultT = [];
 	try {
@@ -30,6 +26,7 @@
 
 		switch ($vars['command']) {
 			case 'loadInfo':
+				$getOneLineQuery = "select * from $table where (correct is null) and (same_word is null)  limit 1";
 				$res = $con->query($getOneLineQuery);
 				if ($res->num_rows > 0) {
 					$temp = $res->fetch_array(MYSQLI_BOTH);
@@ -46,9 +43,22 @@
 				/*добавить уведомление о нуле записей*/
 				break;
 			case 'saveCorrect':
-				$saveCorrectQuery = "UPDATE $table SET correct = ".$vars['word']." where id = ".$vars['id'];
+				$saveCorrectQuery = "UPDATE $table SET correct = '".$vars['word']."' where id = ".$vars['id'];
 				$check = $con->query($saveCorrectQuery);
 				if (!$check) { //Why i cant just print $check to error log????
+					error_log($saveCorrectQuery);
+					error_log("Fail: ".$con->error);
+					$resultT[] = "Не удалось добавить";
+					break;
+				}
+				
+				$resultT[] = "Ответ успешно записан)";
+				break;
+			case 'saveSame':
+				$saveSameQuery = "UPDATE $table SET same_word = '".$vars['word']."' where id = ".$vars['id'];
+				$check = $con->query($saveSameQuery);
+				if (!$check) { //Why i cant just print $check to error log????
+					error_log($saveSameQuery);
 					error_log("Fail: ".$con->error);
 					$resultT[] = "Не удалось добавить";
 					break;

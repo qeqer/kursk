@@ -38,6 +38,22 @@ angular
 		}
 	}
 
+	FM.saveSame = function() {
+		if (FM.in_word !== "") {
+			FM.error_status = "Спасибо за помощь)";
+			$http
+			.post('/api.php', {'command': 'saveSame', 'word': FM.in_word, 'id': FM.cur_id})
+			.then(function(res) {
+				FM.error_status = res["data"][0];
+				FM.loadInfo();
+			}, function(res) {
+				FM.error_status = "WTF";
+			});	
+
+			FM.in_word = "";
+		}
+	}
+
 
 	
 	
