@@ -1,22 +1,23 @@
 <?php
 	header('Content-Type: text/html; charset=UTF-8');
-	header("HTTP/1.1 200 OK");
 	
 	set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line) {
 		throw new ErrorException ($err_msg, 0, $err_severity, $err_file, $err_line);
 	});
+
 
 	$host = "localhost";
 	$user = "root";
 	$password = "1111";
 	$db = "lingvo";
 	$table = "problem_words";
-
+	$dict = "dictionary";
+	
 	$resultT = [];
 	try {
 		$con = new mysqli($host, $user, $password, $db);
 		if ($con->connect_errno) {
-		    printf("Не удалось подключиться: %s\n", $con->connect_error);
+		    error_log("Не удалось подключиться: %s\n", $con->connect_error);
 		    exit();
 		}
 		$con->set_charset("utf8");
@@ -26,6 +27,7 @@
 
 		switch ($vars['command']) {
 			case 'loadInfo':
+				header("HTTP/1.1 200 OK");
 				$getOneLineQuery = "select * from $table where (correct is null) and (same_word is null)  limit 1";
 				$res = $con->query($getOneLineQuery);
 				if ($res->num_rows > 0) {
@@ -42,28 +44,70 @@
 				}
 				/*добавить уведомление о нуле записей*/
 				break;
-			case 'saveCorrect':
+			case 'saveCorrectNew':
+				if ($vars['id'] == 0) {
+					header("HTTP/1.1 447 Not OK");
+					$resultT[] = "Ну нету, ну вот нету!";
+					break;
+				}
 				$saveCorrectQuery = "UPDATE $table SET correct = '".$vars['word']."' where id = ".$vars['id'];
 				$check = $con->query($saveCorrectQuery);
 				if (!$check) { //Why i cant just print $check to error log????
+					header("HTTP/1.1 444 OK");
 					error_log($saveCorrectQuery);
 					error_log("Fail: ".$con->error);
 					$resultT[] = "Не удалось добавить";
 					break;
 				}
-				
+				header("HTTP/1.1 200 OK");
 				$resultT[] = "Ответ успешно записан)";
 				break;
+
+			case 'saveCorrectExist':
+				$saveCorrectQuery = "UPDATE $table SET correct = '".$vars['word']."' where id = ".$vars['id'];
+				$checkExistQuery = "select * from $dict where word = '".$vars['word']."'";
+				$checkExist = $con -> query($checkExistQuery);
+				if ($vars['id'] == 0) {
+					header("HTTP/1.1 447 Not OK");
+					$resultT[] = "Ну нету, ну вот нету!";
+					break;
+				}
+				if (!$checkExist) {
+					error_log("SQL Error: ".$con->error);
+				}
+				if ($checkExist->num_rows == 0) {
+					header("HTTP/1.1 446 Not OK");
+					$resultT[] = "Такого слова нет(";
+					break;
+				}
+				$check = $con->query($saveCorrectQuery);
+				if (!$check) { //Why i cant just print $check to error log????
+					header("HTTP/1.1 444 Not Ok");
+					error_log($saveCorrectQuery);
+					error_log("Fail: ".$con->error);
+					$resultT[] = "Не удалось добавить";
+					break;
+				}
+				header("HTTP/1.1 200 OK");
+				$resultT[] = "Ответ успешно записан)";
+				break;
+
 			case 'saveSame':
+				if ($vars['id'] == 0) {
+					header("HTTP/1.1 447 Not OK");
+					$resultT[] = "Ну нету, ну вот нету!";
+					break;
+				}
 				$saveSameQuery = "UPDATE $table SET same_word = '".$vars['word']."' where id = ".$vars['id'];
 				$check = $con->query($saveSameQuery);
 				if (!$check) { //Why i cant just print $check to error log????
+					header("HTTP/1.1 445 OK");
 					error_log($saveSameQuery);
 					error_log("Fail: ".$con->error);
 					$resultT[] = "Не удалось добавить";
 					break;
 				}
-				
+				header("HTTP/1.1 200 OK");
 				$resultT[] = "Ответ успешно записан)";
 				break;
 		}

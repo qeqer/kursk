@@ -34,19 +34,37 @@ angular
 		});
 	}
 
-	FM.saveCorrect = function() {
+	FM.saveCorrectExist = function() {
 		if (FM.in_word !== "") {
 			FM.error_status = "Спасибо за помощь)";
 			$http
-			.post('/api.php', {'command': 'saveCorrect', 'word': FM.in_word, 'id': FM.cur_id})
+			.post('/api.php', {'command': 'saveCorrectExist', 'word': FM.in_word, 'id': FM.cur_id})
 			.then(function(res) {
 				FM.error_status = res["data"][0];
 				FM.loadInfo();
+				FM.in_word = "";
 			}, function(res) {
-				FM.error_status = "WTF";
+				FM.error_status = res["data"][0];
 			});	
 
-			FM.in_word = "";
+			
+		} else {
+			FM.error_status = "Введите слово, позязки("
+		}
+	}
+
+	FM.saveCorrectNew = function() {
+		if (FM.in_word !== "") {
+			FM.error_status = "Спасибо за помощь)";
+			$http
+			.post('/api.php', {'command': 'saveCorrectNew', 'word': FM.in_word, 'id': FM.cur_id})
+			.then(function(res) {
+				FM.error_status = res["data"][0];
+				FM.loadInfo();
+				FM.in_word = "";
+			}, function(res) {
+				FM.error_status = res["data"][0];
+			});
 		} else {
 			FM.error_status = "Введите слово, позязки("
 		}

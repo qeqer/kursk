@@ -17,8 +17,10 @@
 			<br>
 			<input type = "text" name = "in_word" ng-model="fm.in_word">
 			<br>
-			<button ng-click="fm.saveCorrect()">Save Correct</button>
-			<button ng-click="fm.saveSame()">Save Same</button>
+			<button ng-click="fm.saveCorrectExist()">Была Ошибка</button>
+			<button ng-click="fm.saveCorrectNew()"> Новое Слово </button>
+			<button ng-click="fm.saveSame()">Похожее</button>
+			 
 			<br>
 			{{fm.error_status}}
 		</div>
