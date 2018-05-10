@@ -5,9 +5,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="/app-js/controller.js"></script>
 </head>
+
 	<body>
 
-		<div ng-controller = "fillManager as fm">
+		<div ng-controller = "fillManager as fm" ng-keyup="fm.keyParse($event)">
 			<label>Разпознавание слов!</label>
 			<br>
 			Предложение: <b> {{fm.sentence}} </b>

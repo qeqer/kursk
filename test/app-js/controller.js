@@ -8,6 +8,18 @@ angular
 	FM.in_word = "";
 	FM.error_status = "";
 
+	FM.keyParse = function($event) {
+		switch ($event.keyCode + "") {
+			case '33':
+				FM.saveCorrect();
+				break;
+			case '34':
+				FM.saveSame();
+				break;
+			default:
+				break;
+		}
+	}
 
 	FM.loadInfo = function() {
 		$http
@@ -35,6 +47,8 @@ angular
 			});	
 
 			FM.in_word = "";
+		} else {
+			FM.error_status = "Введите слово, позязки("
 		}
 	}
 
@@ -51,6 +65,8 @@ angular
 			});	
 
 			FM.in_word = "";
+		} else {
+			FM.error_status = "Введите слово, позязки("
 		}
 	}
 
