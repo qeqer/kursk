@@ -1,0 +1,24 @@
+body {
+	font-family: "Geramond" serif;
+	font-size: 18px;
+	position: absolute;
+	top: 30%;
+	left: 30%;
+	background-color: sandybrown;
+}
+
+input {
+	background-color: #green;
+	width: 286px;
+	padding: 5px;
+}
+
+button {
+	float: left;
+	padding: 5px;
+	width: 100px;
+	border: solid 2px #008080;
+	text-align: center;
+	vertical-align: middle;
+	color: black;
+}

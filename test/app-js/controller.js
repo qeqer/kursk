@@ -11,9 +11,12 @@ angular
 	FM.keyParse = function($event) {
 		switch ($event.keyCode + "") {
 			case '33':
-				FM.saveCorrect();
+				FM.saveCorrectExist();
 				break;
 			case '34':
+				FM.saveCorrectNew();
+				break;
+			case '35':
 				FM.saveSame();
 				break;
 			default:
@@ -79,7 +82,7 @@ angular
 				FM.error_status = res["data"][0];
 				FM.loadInfo();
 			}, function(res) {
-				FM.error_status = "WTF";
+				FM.error_status = res["data"][0];
 			});	
 
 			FM.in_word = "";
