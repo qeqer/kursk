@@ -12,12 +12,13 @@
 	$db = "lingvo";
 	$table = "problem_words";
 	$dict = "dictionary";
-	
+	$allOk = TRUE;
 	$resultT = [];
 	try {
 		$con = new mysqli($host, $user, $password, $db);
 		if ($con->connect_errno) {
 		    error_log("Не удалось подключиться: %s\n", $con->connect_error);
+		    $allOk = FALSE;
 		    exit();
 		}
 		$con->set_charset("utf8");
@@ -27,7 +28,6 @@
 
 		switch ($vars['command']) {
 			case 'loadInfo':
-				header("HTTP/1.1 200 OK");
 				$getOneLineQuery = "select * from $table where (correct is null) and (same_word is null)  limit 1";
 				$res = $con->query($getOneLineQuery);
 				if ($res->num_rows > 0) {
@@ -42,24 +42,24 @@
 					$resultT[] = "Слов больше нету)";
 					$resultT[] = "Приходите завтра)";
 				}
-				/*добавить уведомление о нуле записей*/
 				break;
 			case 'saveCorrectNew':
 				if ($vars['id'] == 0) {
 					header("HTTP/1.1 447 Not OK");
 					$resultT[] = "Ну нету, ну вот нету!";
+					$allOk = FALSE;
 					break;
 				}
 				$saveCorrectQuery = "UPDATE $table SET correct = '".$vars['word']."' where id = ".$vars['id'];
 				$check = $con->query($saveCorrectQuery);
-				if (!$check) { //Why i cant just print $check to error log????
-					header("HTTP/1.1 444 OK");
+				if (!$check) {
+					header("HTTP/1.1 444 NOT OK");
 					error_log($saveCorrectQuery);
 					error_log("Fail: ".$con->error);
 					$resultT[] = "Не удалось добавить";
+					$allOk = FALSE;
 					break;
 				}
-				header("HTTP/1.1 200 OK");
 				$resultT[] = "Ответ успешно записан)";
 				break;
 
@@ -70,6 +70,7 @@
 				if ($vars['id'] == 0) {
 					header("HTTP/1.1 447 Not OK");
 					$resultT[] = "Ну нету, ну вот нету!";
+					$allOk = FALSE;
 					break;
 				}
 				if (!$checkExist) {
@@ -78,6 +79,7 @@
 				if ($checkExist->num_rows == 0) {
 					header("HTTP/1.1 446 Not OK");
 					$resultT[] = "Такого слова нет(";
+					$allOk = FALSE;
 					break;
 				}
 				$check = $con->query($saveCorrectQuery);
@@ -86,9 +88,9 @@
 					error_log($saveCorrectQuery);
 					error_log("Fail: ".$con->error);
 					$resultT[] = "Не удалось добавить";
+					$allOk = FALSE;
 					break;
 				}
-				header("HTTP/1.1 200 OK");
 				$resultT[] = "Ответ успешно записан)";
 				break;
 
@@ -105,10 +107,34 @@
 					error_log($saveSameQuery);
 					error_log("Fail: ".$con->error);
 					$resultT[] = "Не удалось добавить";
+					$allOk = FALSE;
 					break;
 				}
-				header("HTTP/1.1 200 OK");
 				$resultT[] = "Ответ успешно записан)";
+				break;
+
+			case 'getCommon':
+				$getSameQuery = "select * from dictionary where word LIKE \"".$vars['word']."%\" order by word limit 1";
+				$res = $con->query($getSameQuery);
+				if (!$res) {
+					header("HTTP/1.1 447 NOT OK");
+					error_log($getSameQuery);
+					error_log("Fail: ".$con->error);
+					$allOk = FALSE;
+					break;
+				}
+				if ($res->num_rows < 1) {
+					$resultT[] = 0;
+					$resultT[] = "Похожих нет";
+					break;
+				}
+				$temp = $res->fetch_array(MYSQLI_BOTH);
+					$resultT[] = $temp['id'];
+					$resultT[] = $temp['word'];
+					$resultT[] = $temp['descript'];
+					$resultT[] = $temp['norm'];
+					$resultT[] = $temp['suf'];
+					$resultT[] = $temp['pref'];
 				break;
 		}
 		$con->close();
@@ -118,6 +144,9 @@
 		$resultT[] = "ERROR";
 		echo json_encode($resultT, JSON_UNESCAPED_UNICODE, true);
 		exit(0);
+	}
+	if ($allOk) {
+		header("HTTP/1.1 200 OK");	
 	}
 	echo json_encode($resultT, JSON_UNESCAPED_UNICODE, true);
 

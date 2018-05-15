@@ -1,10 +1,27 @@
 body {
-	font-family: "Geramond" serif;
 	font-size: 18px;
-	position: absolute;
-	top: 30%;
-	left: 30%;
 	background-color: sandybrown;
+}
+
+.mybody {
+	margin: 0 auto;
+
+	/*display: flex;
+	justify-content: center;*/
+	
+}
+
+.bl {
+	width: 350px;
+	border: solid 2px #008080;
+	float: left;
+	height: 150px;
+}
+
+.smbl {
+	width: 100px;
+	height: 1px;
+	float: left;
 }
 
 input {
@@ -21,4 +38,11 @@ button {
 	text-align: center;
 	vertical-align: middle;
 	color: black;
+}
+
+.clearer {
+	clear: both;
+	display: block;
+	font-size: 0;
+	line-height: 0;	
 }

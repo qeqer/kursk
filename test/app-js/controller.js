@@ -7,6 +7,32 @@ angular
 	FM.sentence = "Слов нема";
 	FM.in_word = "";
 	FM.error_status = "";
+	FM.same_word = "Нажмите вниз";
+	FM.desc = "";
+	FM.norm = "";
+	FM.suf = "";
+	FM.pref = "";
+
+
+	
+
+	FM.getCommon = function() {
+		$http
+		.post('/api.php', {'command': 'getCommon', 'word': FM.in_word})
+		.then(
+			function(res) {
+				FM.same_word = res["data"][1];
+				FM.desc = res["data"][2];
+				FM.norm = res["data"][3];
+				FM.suf = res["data"][4];
+				FM.pref = res["data"][5];
+			},
+			function() {
+				FM.error_status = res["data"][0];
+			}
+		)
+	}
+
 
 	FM.keyParse = function($event) {
 		switch ($event.keyCode + "") {
@@ -19,8 +45,12 @@ angular
 			case '35':
 				FM.saveSame();
 				break;
+			case '40':
+				FM.getCommon();
 			default:
-				break;
+				if (FM.in_word.length > 3) {
+					FM.getCommon();
+				}
 		}
 	}
 
@@ -32,7 +62,7 @@ angular
 			FM.sentence = res["data"][1]; /*магия as is*/ 
 			FM.word = res["data"][2];
 			
-		}, function() { //maybe sometime i will update headers (status) for it works, but not today
+		}, function() {
 			FM.error_status = "WTF";
 		});
 	}
@@ -90,9 +120,11 @@ angular
 			FM.error_status = "Введите слово, позязки("
 		}
 	}
-
-
 	
+	FM.saveSamePredicted = function() {
+		FM.in_word = FM.same_word;
+		FM.saveSame();
+	}
 	
 	FM.loadInfo();
 });

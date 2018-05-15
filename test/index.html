@@ -8,25 +8,37 @@
 </head>
 
 	<body>
-
 		<div ng-controller = "fillManager as fm" ng-keyup="fm.keyParse($event)">
-			<label>Разпознавание слов!</label>
-			<br>
-			Предложение: <b> {{fm.sentence}} </b>
-			<br>
-			Нераспознанное слово: <b> {{fm.word}} </b>
-			<br>
-			<input type = "text" name = "in_word" ng-model="fm.in_word">
-			<br>
-			<button ng-click="fm.saveCorrectExist()">Ошибка</button>
-			<button ng-click="fm.saveCorrectNew()"> Новое Слово </button>
-			<button ng-click="fm.saveSame()">Похожее</button>
-			 
-			<br>
-			{{fm.error_status}}
+			<div class = "mybody">
+				<div class = "bl">
+					<label>Разпознавание слов!</label>
+					<br>
+					Предложение: <b> {{fm.sentence}} </b>
+					<div class = "clearer"></div>
+					Нераспознанное слово: <b> {{fm.word}} </b>
+					<br>
+					<input type = "text" name = "in_word" ng-model="fm.in_word">
+					<div class = "clearer">&nbsp</div>
+					<button ng-click="fm.saveCorrectExist()">Ошибка</button>
+					<button ng-click="fm.saveCorrectNew()"> Новое Слово </button>
+					<button ng-click="fm.saveSame()">Похожее</button>
+					<div class = "clearer">&nbsp</div>
+					{{fm.error_status}}
+				</div>
+				<div class = "bl">
+					Похожее на введенное: {{fm.same_word}} <br>
+					Нормализация: {{fm.norm}} <br>
+					Грамматика: {{fm.desc}} <br>
+					С суффиксом: {{fm.suf}} <br>
+					С преффиксом: {{fm.pref}} <br>
+					<button ng-click="fm.saveSamePredicted()">Угадал)</button>
+
+				</div>
+			</div>
 		</div>
-
-
-
+	<div class = "clearer">&nbsp</div>
+	Нужно ли делать преобразование слов в нижний регистр или предполагаем, что юзер не будет ломать, а в словаре все как думает юзер?
+	Может лучше хранить ID найденного похожего слова в словаре, а не само слово?
+	Как сделать нормальное выравнивание по центру, если тут есть 2 блока и хочется, чтобы они переносились в случае узкого экрана?
 	</body>
 </html>
