@@ -123,7 +123,6 @@ angular
 	
 	FM.saveSamePredicted = function() {
 		FM.in_word = FM.same_word;
-		FM.saveSame();
 	}
 	
 	FM.loadInfo();
