@@ -28,7 +28,7 @@
 
 		switch ($vars['command']) {
 			case 'loadInfo':
-				$getOneLineQuery = "select * from $table where (correct is null) and (same_word is null)  limit 1";
+				$getOneLineQuery = "select * from $table where (correct is null) and (same_word is null) and (correct_new is null)  limit 1";
 				$res = $con->query($getOneLineQuery);
 				if ($res->num_rows > 0) {
 					$temp = $res->fetch_array(MYSQLI_BOTH);
@@ -50,8 +50,8 @@
 					$allOk = FALSE;
 					break;
 				}
-				$saveCorrectQuery = "UPDATE $table SET correct = '".$vars['word']."' where id = ".$vars['id'];
-				$check = $con->query($saveCorrectQuery);
+				$saveCorrectNewQuery = "UPDATE $table SET correct_new = '".$vars['word']."', norm = '".$vars['norm']."', descript = '".$vars['desc']."', pref = '".$vars['pref']."', suf = '".$vars['suf']."' where id = ".$vars['id'];
+				$check = $con->query($saveCorrectNewQuery);
 				if (!$check) {
 					header("HTTP/1.1 444 NOT OK");
 					error_log($saveCorrectQuery);
@@ -75,6 +75,7 @@
 				}
 				if (!$checkExist) {
 					error_log("SQL Error: ".$con->error);
+					break;
 				}
 				if ($checkExist->num_rows == 0) {
 					header("HTTP/1.1 446 Not OK");
@@ -100,7 +101,7 @@
 					$resultT[] = "Ну нету, ну вот нету!";
 					break;
 				}
-				$saveSameQuery = "UPDATE $table SET same_word = '".$vars['word']."' where id = ".$vars['id'];
+				$saveSameQuery = "UPDATE $table SET same_word = '".$vars['word']."', norm = '".$vars['norm']."', descript = '".$vars['desc']."', pref = '".$vars['pref']."', suf = '".$vars['suf']."' where id = ".$vars['id'];
 				$check = $con->query($saveSameQuery);
 				if (!$check) {
 					header("HTTP/1.1 445 Not OK");

@@ -2,12 +2,12 @@ angular
 .module('contr', [])
 .controller('fillManager', function($http) {
 	var FM = this;
-	FM.cur_id = "";
+	FM.cur_id = "0";
 	FM.word = "";
 	FM.sentence = "Слов нема";
 	FM.in_word = "";
 	FM.error_status = "";
-	FM.same_word = "Нажмите вниз";
+	FM.same_word = "";
 	FM.desc = "";
 	FM.norm = "";
 	FM.suf = "";
@@ -31,11 +31,18 @@ angular
 				FM.norm = res["data"][3];
 				FM.suf = res["data"][4];
 				FM.pref = res["data"][5];
-
-				FM.our_norm = FM.word.slice(FM.pref.length, -FM.suf.length + 1);
-				FM.our_desc = FM.desc;
-				FM.our_suf = FM.word.slice(-FM.suf.length);
-				FM.our_pref = FM.word.slice(0, FM.pref.length);
+				if (undefined !== FM.pref && FM.cur_id !== "0") {
+					FM.our_norm = FM.word.slice(FM.pref.length, -FM.suf.length + 1);
+					FM.our_desc = FM.desc;
+					FM.our_suf = FM.word.slice(-FM.suf.length);
+					FM.our_pref = FM.word.slice(0, FM.pref.length);
+				}
+				if (res["data"][0] == "0") {
+					FM.our_norm = "";
+					FM.our_desc = "";
+					FM.our_suf = "";
+					FM.our_pref = "";	
+				}
 			},
 			function() {
 				FM.error_status = res["data"][0];
@@ -103,11 +110,16 @@ angular
 		if (FM.in_word !== "") {
 			FM.error_status = "Спасибо за помощь)";
 			$http
-			.post('/api.php', {'command': 'saveCorrectNew', 'word': FM.in_word, 'id': FM.cur_id})
+			.post('/api.php', {'command': 'saveCorrectNew', 'word': FM.in_word, 'id': FM.cur_id, 'pref': FM.our_pref, 
+				'suf': FM.our_suf, 'desc': FM.our_desc, 'norm': FM.our_norm})
 			.then(function(res) {
 				FM.error_status = res["data"][0];
 				FM.loadInfo();
 				FM.in_word = "";
+				FM.our_pref = "";
+				FM.our_norm = "";
+				FM.our_suf = "";
+				FM.our_desc = "";
 			}, function(res) {
 				FM.error_status = res["data"][0];
 			});
@@ -120,7 +132,9 @@ angular
 		if (FM.in_word !== "") {
 			FM.error_status = "Спасибо за помощь)";
 			$http
-			.post('/api.php', {'command': 'saveSame', 'word': FM.in_word, 'id': FM.cur_id, 'pref': FM.our_pref, 'suf': FM.our_suf, 'desc': FM.our_pref})
+			.post('/api.php', {'command': 'saveSame', 
+				'word': FM.in_word, 'id': FM.cur_id, 'pref': FM.our_pref, 
+				'suf': FM.our_suf, 'desc': FM.our_desc, 'norm': FM.our_norm})
 			.then(function(res) {
 				FM.error_status = res["data"][0];
 				FM.loadInfo();
@@ -135,7 +149,10 @@ angular
 	}
 	
 	FM.saveSamePredicted = function() {
-		FM.in_word = FM.same_word;
+		if (FM.in_word !== "Похожих нет") {
+			FM.in_word = FM.same_word;	
+		}
+		
 
 	}
 	
