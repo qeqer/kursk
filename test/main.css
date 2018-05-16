@@ -24,8 +24,19 @@ body {
 	float: left;
 }
 
+.blinbl {
+	float: left;
+	width: 100px;
+}
+
+.small_input {
+	width: 186px;
+	padding: 1px;
+	height: 18px;
+
+}
+
 input {
-	background-color: #green;
 	width: 286px;
 	padding: 5px;
 }

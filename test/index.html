@@ -21,22 +21,42 @@
 					<div class = "clearer">&nbsp</div>
 					<button ng-click="fm.saveCorrectExist()">Ошибка</button>
 					<button ng-click="fm.saveCorrectNew()"> Новое Слово </button>
-					<button ng-click="fm.saveSame()">Похожее</button>
 					<div class = "clearer">&nbsp</div>
 					{{fm.error_status}}
 				</div>
 				<div class = "bl">
 					Похожее на введенное: {{fm.same_word}} <br>
-					Нормализация: {{fm.norm}} <br>
+					Норма: {{fm.norm}} <br>
 					Грамматика: {{fm.desc}} <br>
 					С суффиксом: {{fm.suf}} <br>
 					С преффиксом: {{fm.pref}} <br>
 					<button ng-click="fm.saveSamePredicted()">Угадал)</button>
-
+				</div>
+				<div class = "bl">
+					Разбор на основе похожести: <br>
+					<div class = "blinbl" style = "font-size: 18px; line-height: 24px">
+						Норма: <br>
+						Грамматика: <br>
+						Префикс: <br>
+						Суффикс: <br>
+					</div>
+					<div>
+						<input class = "small_input" type = "text" name = "our_norm" ng-model="fm.our_norm"> <br>
+						<input class = "small_input" type = "text" name = "our_desc" ng-model="fm.our_desc"><br>
+						<input class = "small_input" type = "text" name = "our_pref" ng-model="fm.our_pref"> <br>
+						<input class = "small_input" type = "text" name = "our_suf" ng-model="fm.our_suf"><br>
+					</div>
+					<button ng-click="fm.saveSame()">Похожее</button>
 				</div>
 			</div>
 		</div>
 	<div class = "clearer">&nbsp</div>
+	Вверх- Сохранить найденное <br>
+	Вниз - Найти похожее <br>
+	PgUp - Сохранить как уже существующее <br>
+	PgDn - Сохранить как новое слово <br>
+	End  - Сохранить как похожее <br>
+
 	Нужно ли делать преобразование слов в нижний регистр или предполагаем, что юзер не будет ломать, а в словаре все как думает юзер?
 	Может лучше хранить ID найденного похожего слова в словаре, а не само слово?
 	Как сделать нормальное выравнивание по центру, если тут есть 2 блока и хочется, чтобы они переносились в случае узкого экрана?

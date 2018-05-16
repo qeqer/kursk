@@ -102,8 +102,8 @@
 				}
 				$saveSameQuery = "UPDATE $table SET same_word = '".$vars['word']."' where id = ".$vars['id'];
 				$check = $con->query($saveSameQuery);
-				if (!$check) { //Why i cant just print $check to error log????
-					header("HTTP/1.1 445 OK");
+				if (!$check) {
+					header("HTTP/1.1 445 Not OK");
 					error_log($saveSameQuery);
 					error_log("Fail: ".$con->error);
 					$resultT[] = "Не удалось добавить";

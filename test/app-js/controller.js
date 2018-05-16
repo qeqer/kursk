@@ -13,6 +13,11 @@ angular
 	FM.suf = "";
 	FM.pref = "";
 
+	FM.our_desc = "";
+	FM.our_norm = "";
+	FM.our_suf = "";
+	FM.our_pref = "";
+
 
 	
 
@@ -26,6 +31,11 @@ angular
 				FM.norm = res["data"][3];
 				FM.suf = res["data"][4];
 				FM.pref = res["data"][5];
+
+				FM.our_norm = FM.word.slice(FM.pref.length, -FM.suf.length + 1);
+				FM.our_desc = FM.desc;
+				FM.our_suf = FM.word.slice(-FM.suf.length);
+				FM.our_pref = FM.word.slice(0, FM.pref.length);
 			},
 			function() {
 				FM.error_status = res["data"][0];
@@ -44,6 +54,9 @@ angular
 				break;
 			case '35':
 				FM.saveSame();
+				break;
+			case '38':
+				FM.saveSamePredicted();
 				break;
 			case '40':
 				FM.getCommon();
@@ -107,7 +120,7 @@ angular
 		if (FM.in_word !== "") {
 			FM.error_status = "Спасибо за помощь)";
 			$http
-			.post('/api.php', {'command': 'saveSame', 'word': FM.in_word, 'id': FM.cur_id})
+			.post('/api.php', {'command': 'saveSame', 'word': FM.in_word, 'id': FM.cur_id, 'pref': FM.our_pref, 'suf': FM.our_suf, 'desc': FM.our_pref})
 			.then(function(res) {
 				FM.error_status = res["data"][0];
 				FM.loadInfo();
@@ -123,6 +136,7 @@ angular
 	
 	FM.saveSamePredicted = function() {
 		FM.in_word = FM.same_word;
+
 	}
 	
 	FM.loadInfo();
