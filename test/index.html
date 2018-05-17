@@ -17,13 +17,13 @@
 					<div class = "clearer"></div>
 					Нераспознанное слово: <b> {{fm.word}} </b>
 					<br>
-					<input type = "text" name = "in_word" ng-model="fm.in_word" autofocus>
-					<div class = "clearer">&nbsp</div>
-					
+					Ошибка : <b>{{fm.pred_corr}}</b> <br>
+					Похожее: <b>{{fm.pred_same}}</b> <br>
 					<div class = "clearer">&nbsp</div>
 					{{fm.error_status}}
 				</div>
 				<div class = "bl">
+					<input type = "text" name = "in_word" ng-model="fm.in_word" autofocus>
 					Похожее на введенное: {{fm.same_word}} <br>
 					Норма: {{fm.norm}} <br>
 					Грамматика: {{fm.desc}} <br>
@@ -32,7 +32,7 @@
 					<button ng-click="fm.saveSamePredicted()">Угадал)</button>
 				</div>
 				<div class = "bl">
-					Разбор на основе похожести: <br>
+					{{fm.pred_same}}<br>
 					<div class = "blinbl" style = "font-size: 18px; line-height: 24px">
 						Норма: <br>
 						Грамматика: <br>
@@ -59,8 +59,5 @@
 	PgDn - Сохранить как новое слово <br>
 	End  - Сохранить как похожее <br>
 
-	Нужно ли делать преобразование слов в нижний регистр или предполагаем, что юзер не будет ломать, а в словаре все как думает юзер?
-	Может лучше хранить ID найденного похожего слова в словаре, а не само слово?
-	Как сделать нормальное выравнивание по центру, если тут есть 2 блока и хочется, чтобы они переносились в случае узкого экрана?
 	</body>
 </html>

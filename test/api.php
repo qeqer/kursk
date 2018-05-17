@@ -10,7 +10,7 @@
 	$user = "root";
 	$password = "1111";
 	$db = "lingvo";
-	$table = "problem_words";
+	$problem = "problem_words";
 	$dict = "dictionary";
 	$allOk = TRUE;
 	$resultT = [];
@@ -28,19 +28,23 @@
 
 		switch ($vars['command']) {
 			case 'loadInfo':
-				$getOneLineQuery = "select * from $table where (correct is null) and (same_word is null) and (correct_new is null)  limit 1";
+				$getOneLineQuery = "select * from $problem";
 				$res = $con->query($getOneLineQuery);
 				if ($res->num_rows > 0) {
 					$temp = $res->fetch_array(MYSQLI_BOTH);
 					$resultT[] = $temp['id'];
-					$resultT[] = $temp['sentence'];/*магия as is, боремся с кавычками как черти*/
+					$resultT[] = $temp['sentence'];
 					$resultT[] = $temp['origin'];
-					$resultT[] = "";
+					$resultT[] = $temp['pred_same'];
+					$resultT[] = $temp['pred_corr'];
 
 				} else {
 					$resultT[] = "0";
 					$resultT[] = "Слов больше нету)";
 					$resultT[] = "Приходите завтра)";
+					$resultT[] = "";
+					$resultT[] = "";
+					
 				}
 				break;
 			case 'saveCorrectNew':

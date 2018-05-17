@@ -13,6 +13,9 @@ angular
 	FM.suf = "";
 	FM.pref = "";
 
+	FM.pred_error = ""; //полученное из бд с исправленной ошибкой
+	FM.pred_same = ""; //полученное из бд с похожим разбором
+
 	FM.our_desc = "";
 	FM.our_norm = "";
 	FM.our_suf = "";
@@ -81,7 +84,8 @@ angular
 			FM.cur_id = res["data"][0];
 			FM.sentence = res["data"][1]; /*магия as is*/ 
 			FM.word = res["data"][2];
-			
+			FM.pred_same = res["data"][3];
+			FM.pred_corr = res["data"][4];
 		}, function() {
 			FM.error_status = "WTF";
 		});
