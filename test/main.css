@@ -1,55 +1,31 @@
-body {
-	font-size: 18px;
-	background-color: sandybrown;
-}
-
-.mybody {
-	margin: 0 auto;
-
-	/*display: flex;
-	justify-content: center;*/
-	
+html, body {
+	text-align: center;
+	background-color: #ddffff;
+	height: 100%;
 }
 
 .bl {
-	width: 350px;
-	border: solid 2px #008080;
-	float: left;
-	height: 150px;
-}
+	width: 510px;
+	border: solid 1px #008080;
 
-.smbl {
-	width: 100px;
-	height: 1px;
-	float: left;
 }
 
 .blinbl {
 	float: left;
-	width: 100px;
+	width: 249px;
 }
 
 .small_input {
-	width: 186px;
+	width: 240px;
 	padding: 1px;
-	height: 18px;
 
 }
-
-input {
-	width: 286px;
-	padding: 5px;
+.small_small_input {
+	width: 184px;
+	padding: 1px;
 }
 
-button {
-	float: left;
-	padding: 5px;
-	width: 100px;
-	border: solid 2px #008080;
-	text-align: center;
-	vertical-align: middle;
-	color: black;
-}
+
 
 .clearer {
 	clear: both;

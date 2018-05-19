@@ -12,6 +12,7 @@
 	$db = "lingvo";
 	$problem = "problem_words";
 	$dict = "dictionary";
+	$restable = "result";
 	$allOk = TRUE;
 	$resultT = [];
 	try {
@@ -27,6 +28,30 @@
 		
 
 		switch ($vars['command']) {
+			case 'getCommon':
+				$getSameQuery = "select * from dictionary where word LIKE \"".$vars['word']."%\" order by word limit 1";
+				$res = $con->query($getSameQuery);
+				if (!$res) {
+					header("HTTP/1.1 447 NOT OK");
+					error_log($getSameQuery);
+					error_log("Fail: ".$con->error);
+					$allOk = FALSE;
+					break;
+				}
+				if ($res->num_rows < 1) {
+					$resultT[] = "0";
+					$resultT[] = "Похожих нет";
+					$resultT[] = "Похожих нет";
+					$resultT[] = "Похожих нет";
+					break;
+				}
+				$temp = $res->fetch_array(MYSQLI_BOTH);
+					$resultT[] = $temp['id'];
+					$resultT[] = $temp['word'];
+					$resultT[] = $temp['descript'];
+					$resultT[] = $temp['norm'];
+				break;
+
 			case 'loadInfo':
 				$getOneLineQuery = "select * from $problem";
 				$res = $con->query($getOneLineQuery);
@@ -47,6 +72,42 @@
 					
 				}
 				break;
+
+			case 'saveToBaseAndDelete':
+
+				$saveNew = "INSERT INTO $restable(origin, correct, norm, gram) VALUES (\"".$vars['word']."\",\"".$vars['corr']."\",\"".$vars['norm']."\",\"". $vars['gram']."\")";
+				if ($vars['corr'] == "" || $vars['norm'] == "" || $vars['gram'] == "") {
+					error_log($vars['corr']."1".$vars['norm']."2".$vars['gram']);
+					header("HTTP/1.1 444 NOT OK");
+					$resultT[] = "Заполните все поля";
+					$allOk = FALSE;
+					break;
+				}
+
+				if ($vars['norm'] == "Похожих нет") {
+					header("HTTP/1.1 444 NOT OK");
+					$resultT[] = "Нужно слово, которое есть. Либо заполните поля";
+					$allOk = FALSE;
+					break;
+				}
+
+				$check = $con->query($saveNew);
+				if (!$check) {
+					header("HTTP/1.1 444 NOT OK");
+					error_log($saveNew);
+					error_log("Fail: ".$con->error);
+					$resultT[] = "Не удалось добавить";
+					$allOk = FALSE;
+					break;
+				}
+				$deleteWorked = "DELETE FROM $problem WHERE id = ".$vars['id'];
+				$check = $con->query($deleteWorked);
+				$resultT[] = "Ответ успешно записан)";
+				break;
+
+
+
+
 			case 'saveCorrectNew':
 				if ($vars['id'] == 0) {
 					header("HTTP/1.1 447 Not OK");
@@ -118,29 +179,7 @@
 				$resultT[] = "Ответ успешно записан)";
 				break;
 
-			case 'getCommon':
-				$getSameQuery = "select * from dictionary where word LIKE \"".$vars['word']."%\" order by word limit 1";
-				$res = $con->query($getSameQuery);
-				if (!$res) {
-					header("HTTP/1.1 447 NOT OK");
-					error_log($getSameQuery);
-					error_log("Fail: ".$con->error);
-					$allOk = FALSE;
-					break;
-				}
-				if ($res->num_rows < 1) {
-					$resultT[] = 0;
-					$resultT[] = "Похожих нет";
-					break;
-				}
-				$temp = $res->fetch_array(MYSQLI_BOTH);
-					$resultT[] = $temp['id'];
-					$resultT[] = $temp['word'];
-					$resultT[] = $temp['descript'];
-					$resultT[] = $temp['norm'];
-					$resultT[] = $temp['suf'];
-					$resultT[] = $temp['pref'];
-				break;
+			
 		}
 		$con->close();
 

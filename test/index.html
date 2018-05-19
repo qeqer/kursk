@@ -1,63 +1,80 @@
 <!doctype html>
 <html ng-app="contr">
 <head>
+	<title> Разпознавание слов! </title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="main.css" />
 	<meta charset="utf-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.js"></script>
 	<script src="/app-js/controller.js"></script>
 </head>
 
-	<body>
-		<div ng-controller = "fillManager as fm" ng-keyup="fm.keyParse($event)">
-			<div class = "mybody">
-				<div class = "bl">
-					<label>Разпознавание слов!</label>
-					<br>
-					Предложение: <b> {{fm.sentence}} </b>
-					<div class = "clearer"></div>
-					Нераспознанное слово: <b> {{fm.word}} </b>
-					<br>
-					Ошибка : <b>{{fm.pred_corr}}</b> <br>
-					Похожее: <b>{{fm.pred_same}}</b> <br>
-					<div class = "clearer">&nbsp</div>
+<body>
+	<div class = "container h-100" ng-controller = "fillManager as fm">			
+		<div class="mx-auto bl h-100"  style = "width: 512px;">
+			<div class = "bl" style = "padding: 5px;">
+				<div>
+				Предложение
+				<div class = "clearer">&nbsp;</div>
+				<div ng-bind-html="fm.sentence"> </div>
+				<div class = "clearer">&nbsp;</div>
+				</div>
+				<div>
+					<div class = "clearer">
+						&nbsp;
+					</div>
+					<div class = "blinbl">
+						Ошибка 
+						<input type = "text" class = "small_input" name = "pred_corr" ng-model="fm.pred_corr" ng-keyup="fm.keyParse($event, 0)" autofocus>
+						<button ng-click="fm.saveCorrectExist()">Ошибка</button>
+
+					</div>
+					<div class = "blinbl">
+						Похожее
+						<input type = "text" name = "pred_same" class = "small_input" ng-model="fm.pred_same" ng-keyup="fm.keyParse($event, 1)"> 
+					</div>
+					<div class = "clearer">
+						&nbsp;
+					</div>
+				</div>
+
+				<div>
+					<div class = "clearer">
+						&nbsp;
+					</div>
 					{{fm.error_status}}
-				</div>
-				<div class = "bl">
-					<input type = "text" name = "in_word" ng-model="fm.in_word" autofocus>
-					Похожее на введенное: {{fm.same_word}} <br>
-					Норма: {{fm.norm}} <br>
-					Грамматика: {{fm.desc}} <br>
-					С суффиксом: {{fm.suf}} <br>
-					С преффиксом: {{fm.pref}} <br>
-					<button ng-click="fm.saveSamePredicted()">Угадал)</button>
-				</div>
-				<div class = "bl">
-					{{fm.pred_same}}<br>
-					<div class = "blinbl" style = "font-size: 18px; line-height: 24px">
-						Норма: <br>
-						Грамматика: <br>
-						Префикс: <br>
-						Суффикс: <br>
+					<div class = "clearer">
+						&nbsp;
 					</div>
-					<div>
-						<input class = "small_input" type = "text" name = "our_norm" ng-model="fm.our_norm"> <br>
-						<input class = "small_input" type = "text" name = "our_desc" ng-model="fm.our_desc"><br>
-						<input class = "small_input" type = "text" name = "our_pref" ng-model="fm.our_pref"> <br>
-						<input class = "small_input" type = "text" name = "our_suf" ng-model="fm.our_suf"><br>
+					<div style = ""> 
+						Норма:
+					</div> 
+					<input style = "" type = "text" name = "norm" class = "small_input" ng-model="fm.norm">
+					<div class = "clearer">
+						&nbsp;
 					</div>
-					<button ng-click="fm.saveCorrectExist()">Ошибка</button>
-					<button ng-click="fm.saveCorrectNew()">Новое Слово</button>
-					<button ng-click="fm.saveSame()">Похожее</button>
+					<div style = ""> 
+						Грамматика:
+					</div> 
+					<input style = "" type = "text" name = "norm" class = "small_input" ng-model="fm.gram">
+					<div class = "clearer">
+						&nbsp;
+					</div>
+					<div style = ""> 
+						Норма разбираемого:
+					</div> 
+					<input style = "" type = "text" name = "norm" class = "small_input" ng-model="fm.our_norm">
+					<div class = "clearer">
+						&nbsp;
+					</div>
+					{{fm.pref}}
 				</div>
 			</div>
-			ID: {{fm.cur_id}}
 		</div>
-	<div class = "clearer">&nbsp</div>
-	Вверх- Дополнить найденное <br>
-	Вниз - Найти похожее <br>
-	PgUp - Сохранить как уже существующее <br>
-	PgDn - Сохранить как новое слово <br>
-	End  - Сохранить как похожее <br>
-
-	</body>
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </html>
