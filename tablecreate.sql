@@ -6,4 +6,6 @@ CREATE TABLE problem_words (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, sentence
     pred_same VARCHAR(40) DEFAULT NULL, pred_corr VARCHAR(40) DEFAULT NULL) DEFAULT CHARACTER SET utf8;
 INSERT INTO problem_words(sentence, origin, pred_same, pred_corr) VALUES ("настольнцй ночник", "настольнцй", "напольный", "настольный");
 INSERT INTO problem_words(sentence, origin, pred_same, pred_corr) VALUES ("нету няши", "няши", "каши", "наша");
+INSERT INTO problem_words(sentence, origin, pred_same, pred_corr) VALUES ("ножка подстольная", "подстольная", "подпольная", "подпольная");
+
 SELECT * FROM problem_words;

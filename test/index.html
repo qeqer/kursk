@@ -26,13 +26,14 @@
 					</div>
 					<div class = "blinbl">
 						Ошибка 
-						<input type = "text" class = "small_input" name = "pred_corr" ng-model="fm.pred_corr" ng-keyup="fm.keyParse($event, 0)" autofocus>
-						<button ng-click="fm.saveCorrectExist()">Ошибка</button>
+						<input type = "text" class = "small_input form-control" name = "pred_corr" ng-model="fm.pred_corr" ng-keyup="fm.keyParse($event, 0)" ng-click = "fm.keyParse($event, 0)" autofocus>
+						<button class = "btn btn-primary" ng-click="fm.saveCorrectExist()">Ошибка</button>
 
 					</div>
 					<div class = "blinbl">
 						Похожее
-						<input type = "text" name = "pred_same" class = "small_input" ng-model="fm.pred_same" ng-keyup="fm.keyParse($event, 1)"> 
+						<input type = "text" name = "pred_same" class = "small_input form-control" ng-model="fm.pred_same" ng-keyup="fm.keyParse($event, 1)" ng-click = "fm.keyParse($event, 1)">
+						<button class = "btn btn-primary" ng-click="fm.saveCorrectNew()">Новое</button>						
 					</div>
 					<div class = "clearer">
 						&nbsp;
@@ -47,31 +48,34 @@
 					<div class = "clearer">
 						&nbsp;
 					</div>
-					<div style = ""> 
-						Норма:
-					</div> 
-					<input style = "" type = "text" name = "norm" class = "small_input" ng-model="fm.norm">
+					<label style = "float: left" class = "col-form-label"> Норма: </label> 
+					<input style = "float: right" type = "text" name = "norm" class = "small_input form-control" ng-model="fm.norm">
 					<div class = "clearer">
 						&nbsp;
 					</div>
 					<div style = ""> 
-						Грамматика:
+						<label style = "float: left" class = "col-form-label"> Грамматика: </label>
+						<input style = "float: right" type = "text" name = "norm" class = "small_input form-control" ng-model="fm.gram">
 					</div> 
-					<input style = "" type = "text" name = "norm" class = "small_input" ng-model="fm.gram">
+					
 					<div class = "clearer">
 						&nbsp;
 					</div>
-					<div style = ""> 
-						Норма разбираемого:
-					</div> 
-					<input style = "" type = "text" name = "norm" class = "small_input" ng-model="fm.our_norm">
+					<div class = "">
+						<label style = "float: left" class = "col-form-label"> Норма разбираемого: </label>
+						<input style = "float: right;" type = "text" name = "norm" class = "form-control small_input" ng-model="fm.our_norm">
+					</div>
 					<div class = "clearer">
 						&nbsp;
 					</div>
-					{{fm.pref}}
+				</div>
+				<div class = "alert alert-success" role = "alert">
+				Краткий Гайд:<br>
+				Слово написано с ошибкой? Вводите нужное, если система не угадала, проверяете чтобы Норма разбираемого была правильной и грамматика была верной и нажимаете "Ошибка". <br>
+				Это новое слово? Кликните на поле с похожим, если оно подходит. Если система не угадала, вводите нужное в Норму разбираемого и в грамматику и нажимаете "Новое".
 				</div>
 			</div>
-		</div>
+		</div> 
 	</div>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -4,6 +4,11 @@ html, body {
 	height: 100%;
 }
 
+button {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
 .bl {
 	width: 510px;
 	border: solid 1px #008080;
@@ -17,12 +22,9 @@ html, body {
 
 .small_input {
 	width: 240px;
-	padding: 1px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 
-}
-.small_small_input {
-	width: 184px;
-	padding: 1px;
 }
 
 
